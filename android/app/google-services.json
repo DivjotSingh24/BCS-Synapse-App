@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1071331553019",
+    "project_id": "bcss-c949d",
+    "storage_bucket": "bcss-c949d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071331553019:android:000ed476aeebfdf7940a5e",
+        "android_client_info": {
+          "package_name": "com.bcs.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiO7n_uUrj3n5wj3PdBRZzZQnlVYdUfoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
