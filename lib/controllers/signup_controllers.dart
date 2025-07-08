@@ -1,46 +1,72 @@
-import 'package:bcs/screens/login_screen.dart';
-import 'package:bcs/screens/splash_screen.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:bcs/screens/login_screen.dart';
 
 class SignupControllers {
-  static Future<void> createAccount(
-      {required BuildContext context,
-      required String email,
-      required String password,
-      required String name,
-      required String Country}) async {
+  static Future<void> signInWithGoogle(BuildContext context) async {
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      var userid = FirebaseAuth.instance.currentUser!.uid;
-      var db = FirebaseFirestore.instance;
-      //this instance can be used to give access data in the database
-      //users table,every user has their own document and .set will add data to the document
-      Map<String, dynamic> data = {
-        "name": name,
-        "email": email,
-        "Country": Country,
-        "Id": userid.toString()
-      };
-      try {
-        await db.collection("users").doc(userid.toString()).set(data);
-      } catch (e) {
-        print(e);
-      }
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      print("Account created successfully");
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) {
-        return LoginScreen();
-      }), (route) {
-        return false;
-      });
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+
+        final User? user = userCredential.user;
+
+        if (user != null) {
+          final String? email = user.email;
+
+          // Check if the email ends with 'be23@thapar.edu' or 'be24@thapar.edu'
+          if (email != null &&
+              (email.endsWith('be23@thapar.edu') ||
+                  email.endsWith('be24@thapar.edu'))) {
+            final db = FirebaseFirestore.instance;
+
+            final Map<String, dynamic> data = {
+              "email": email,
+              "Id": user.uid,
+              "Role": 'user',
+            };
+
+            await db.collection("users").doc(user.uid).set(data);
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Signed in successfully!')),
+            );
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+              (route) => false,
+            );
+          } else {
+            // Sign out the user if their email does not match the allowed domains
+            await FirebaseAuth.instance.signOut();
+            await googleSignIn.signOut();
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Only Thapar.edu emails are allowed.'),
+              ),
+            );
+          }
+        }
+      }
     } catch (e) {
-      SnackBar errorsnackbar = SnackBar(content: Text(e.toString()));
-      ScaffoldMessenger.of(context).showSnackBar(errorsnackbar);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
   }
 }

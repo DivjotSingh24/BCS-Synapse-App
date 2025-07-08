@@ -12,7 +12,20 @@
           "package_name": "com.bcs.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1071331553019-hiaeitj7g7qcmc7cm90sn7hsfuahvmip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bcs.app",
+            "certificate_hash": "f318b448069649072c68f5873bc49d2bb0f5481a"
+          }
+        },
+        {
+          "client_id": "1071331553019-vm2ljoahmvmv4l6f2m9rfjom8a2db858.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAiO7n_uUrj3n5wj3PdBRZzZQnlVYdUfoA"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071331553019-vm2ljoahmvmv4l6f2m9rfjom8a2db858.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1071331553019-ve8qqpsnjie19sc679v2v28rgorq1gje.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "bcsapp.bcs"
+              }
+            }
+          ]
         }
       }
     }

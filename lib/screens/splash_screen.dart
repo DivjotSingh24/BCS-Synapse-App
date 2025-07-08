@@ -1,3 +1,4 @@
+
 import 'package:bcs/screens/home_screen.dart';
 import 'package:bcs/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Navigate to the appropriate screen after a 2-second delay
+    // Navigate to the appropriate screen after a 3-second delay
     Future.delayed(const Duration(seconds: 3), () {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
@@ -27,25 +28,30 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToLogin() {
-    Navigator.pushReplacement(context, MaterialPageRoute(
-      builder: (context) => const LoginScreen(),
-    ));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
   }
 
   void _navigateToHomescreen() {
-    Navigator.pushReplacement(context, MaterialPageRoute(
-      builder: (context) => const HomeScreen(),
-    ));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Image.asset('assets/images/old_standee[1].png'),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/1.png'),
+            fit: BoxFit.cover, // Ensures the image fills the screen
+          ),
         ),
       ),
     );
